@@ -4,7 +4,7 @@ import com.aos.domain.model.UiGetVideoModel
 import com.aos.domain.repository.VideoRepository
 import javax.inject.Inject
 
-class SelectVideoUseCase @Inject constructor(
+class SearchVideoUseCase @Inject constructor(
     private val videoRepository: VideoRepository
 ) {
 
