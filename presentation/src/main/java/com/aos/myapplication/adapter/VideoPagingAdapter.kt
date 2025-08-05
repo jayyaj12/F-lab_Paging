@@ -1,22 +1,21 @@
-package com.aos.myapplication.view
+package com.aos.myapplication.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.aos.domain.model.Document
-import com.aos.domain.model.UiGetVideoModel
+import com.aos.domain.model.Video
 import com.aos.myapplication.databinding.ItemVideoBinding
+import com.aos.myapplication.view.VideoDiffCallback
 
-class VideoListAdapter: ListAdapter<Document, VideoListAdapter.VideoViewHolder>(
+class VideoPagingAdapter: PagingDataAdapter<Video, VideoPagingAdapter.VideoViewHolder>(
     VideoDiffCallback()
 ) {
 
     inner class VideoViewHolder(private val binding: ItemVideoBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Document) {
-            with(binding) {
-                tvTitle.text = item.title
-            }
+        fun bind(item: Video) {
+            binding.video = item
+            binding.executePendingBindings()
         }
     }
 
@@ -26,6 +25,8 @@ class VideoListAdapter: ListAdapter<Document, VideoListAdapter.VideoViewHolder>(
     }
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        getItem(position)?.let {
+            holder.bind(it)
+        }
     }
 }

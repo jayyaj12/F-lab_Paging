@@ -49,6 +49,12 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
 
+    // paging
+    implementation("androidx.paging:paging-runtime:3.3.6")
+
+    // glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
     // hilt
     implementation("com.google.dagger:hilt-android:2.56.2")
     kapt("com.google.dagger:hilt-compiler:2.56.2")

@@ -8,7 +8,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GetVideoEntity(
     val meta: Meta,
-    val documents: List<Document>
+    @SerialName("documents")
+    val videos: List<Video>
 )
 
 @Serializable
@@ -22,7 +23,7 @@ data class Meta(
 )
 
 @Serializable
-data class Document(
+data class Video(
     val title: String,
     val url: String,
     @SerialName("datetime")

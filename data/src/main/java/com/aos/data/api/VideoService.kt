@@ -10,7 +10,9 @@ interface VideoService {
 
     @GET("vclip")
     suspend fun getVideo(
-        @Query("query") query: String
+        @Query("query") query: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
     ): NetworkState<GetVideoEntity>
 
 }

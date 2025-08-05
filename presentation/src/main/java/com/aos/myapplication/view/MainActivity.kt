@@ -1,25 +1,30 @@
 package com.aos.myapplication.view
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.aos.myapplication.R
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.paging.map
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
+import com.aos.myapplication.adapter.VideoPagingAdapter
 import com.aos.myapplication.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val mainViewModel by viewModels<MainViewModel>()
-    private lateinit var videoListAdapter: VideoListAdapter
+    private lateinit var videoPagingAdapter: VideoPagingAdapter
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = this
         binding.vm = mainViewModel
         setContentView(binding.root)
 
@@ -28,13 +33,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupVideoListAdapter() {
-        binding.rvVideoList.adapter = videoListAdapter
+        videoPagingAdapter = VideoPagingAdapter()
+        videoPagingAdapter.addLoadStateListener { loadStates ->
+            val isEmpty = loadStates.refresh is LoadState.NotLoading &&
+                    loadStates.append.endOfPaginationReached &&
+                    videoPagingAdapter.itemCount == 0
+            mainViewModel.isEmptyVideos(isEmpty)
+        }
+        with(binding.rvVideoList) {
+            adapter = videoPagingAdapter
+            addItemDecoration(
+                DividerItemDecoration(context, RecyclerView.VERTICAL)
+            )
+        }
+
     }
 
     private fun setupViewModelObserver() {
-        mainViewModel.getSearchVideo.observe(this) {
-            Timber.e("it.documents ${it.documents}")
-            videoListAdapter.submitList(it.documents)
+        lifecycleScope.launch {
+            mainViewModel.pagedVideos.collectLatest {
+                videoPagingAdapter.submitData(it )
+            }
         }
     }
 }

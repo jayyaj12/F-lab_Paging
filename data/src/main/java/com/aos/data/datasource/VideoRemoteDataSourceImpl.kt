@@ -6,7 +6,11 @@ import com.aos.domain.util.NetworkState
 import jakarta.inject.Inject
 
 class VideoRemoteDataSourceImpl @Inject constructor(private val videoService: VideoService): VideoRemoteDataSource {
-    override suspend fun getVideo(query: String): NetworkState<GetVideoEntity> {
-        return videoService.getVideo(query)
+    override suspend fun getVideos(
+        query: String,
+        page: Int,
+        size: Int
+    ): NetworkState<GetVideoEntity> {
+        return videoService.getVideo(query, page, size)
     }
 }

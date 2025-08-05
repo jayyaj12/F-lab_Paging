@@ -9,8 +9,8 @@ import com.aos.domain.util.NetworkState
 import jakarta.inject.Inject
 
 class VideoRepositoryImpl @Inject constructor(private val videoRemoteDataSourceImpl: VideoRemoteDataSourceImpl): VideoRepository {
-    override suspend fun getVideo(query: String): Result<UiGetVideoModel> {
-        return when(val data = videoRemoteDataSourceImpl.getVideo(query)) {
+    override suspend fun getVideos(query: String, page: Int, size: Int): Result<UiGetVideoModel> {
+        return when(val data = videoRemoteDataSourceImpl.getVideos(query, page, size)) {
             is NetworkState.Success -> Result.success(data.body.toUiVideoModel())
             is NetworkState.Failure -> Result.failure(
                 RetrofitFailureStateException(
