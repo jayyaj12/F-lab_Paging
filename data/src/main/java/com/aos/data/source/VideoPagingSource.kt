@@ -7,9 +7,7 @@ import com.aos.data.datasource.VideoRemoteDataSource
 import com.aos.data.datasource.VideoRemoteDataSourceImpl
 import com.aos.data.entity.GetVideoEntity
 import com.aos.data.mapper.toDomain
-import com.aos.data.mapper.toUiVideoModel
 import com.aos.data.mapper.toVideoModel
-import com.aos.data.state.VideoState
 import com.aos.data.util.RetrofitFailureStateException
 import com.aos.domain.model.Video
 import com.aos.domain.model.VideoType

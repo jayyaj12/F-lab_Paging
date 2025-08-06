@@ -5,7 +5,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.aos.data.datasource.VideoRemoteDataSourceImpl
-import com.aos.data.mapper.toUiVideoModel
 import com.aos.data.source.VideoPagingSource
 import com.aos.data.util.RetrofitFailureStateException
 import com.aos.domain.model.UiGetVideoModel

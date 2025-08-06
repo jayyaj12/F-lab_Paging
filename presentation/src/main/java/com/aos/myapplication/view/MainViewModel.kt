@@ -10,7 +10,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.aos.data.source.VideoPagingSource
-import com.aos.data.state.VideoState
 import com.aos.domain.model.UiGetVideoModel
 import com.aos.domain.usecase.SearchVideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,7 +49,6 @@ class MainViewModel @Inject constructor(private val searchVideoUseCase: SearchVi
     // 검색 버튼 클릭
     fun onClickedSearchBtn() {
         // 비어 있지 않을때만 검색
-        VideoState.clearData()
         _searchTrigger.value = !searchTrigger.value
     }
 
