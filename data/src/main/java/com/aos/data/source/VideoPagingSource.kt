@@ -8,6 +8,7 @@ import com.aos.data.datasource.VideoRemoteDataSourceImpl
 import com.aos.data.entity.GetVideoEntity
 import com.aos.data.mapper.toDomain
 import com.aos.data.mapper.toUiVideoModel
+import com.aos.data.mapper.toVideoModel
 import com.aos.data.state.VideoState
 import com.aos.data.util.RetrofitFailureStateException
 import com.aos.domain.model.Video
@@ -30,7 +31,6 @@ class VideoPagingSource(
         val pageSize = params.loadSize
 
         try {
-            // 1. remoteDataSource.getVideos(...) 호출하여 GetVideoEntity 획득
             val getVideoEntity: GetVideoEntity = when (val result =
                 videoRemoteDataSourceImpl.getVideos(query, pageNumber, pageSize)) {
                 is NetworkState.Success -> result.body
@@ -41,59 +41,19 @@ class VideoPagingSource(
                 )
             }
 
-            var typeForThisPage = currentPageLastType
-            var indexForThisPage = currentPageLastIndex
+            val mappingResult = getVideoEntity.toVideoModel(
+                initialType = currentPageLastType,
+                initialIndex = currentPageLastIndex
+            )
 
-            Timber.e("==============================")
-            Timber.e("typeForThisPage $typeForThisPage")
-            Timber.e("indexForThisPage $indexForThisPage")
-            Timber.e("==============================")
-
-            val addPreviousType = if (indexForThisPage != 0) {
-                3 - indexForThisPage
-            } else {
-                0
-            }
-
-            Timber.e("addPreviousType $addPreviousType")
-            val domainVideos = getVideoEntity.videos.mapIndexed { videoIndex, video ->
-                val currentItemType: VideoType
-                Timber.e("videoIndex $videoIndex")
-                Timber.e("indexForThisPage $indexForThisPage")
-
-                if (videoIndex >= addPreviousType) {
-                    val adjustedIndex = if (indexForThisPage != 0) {
-                        (videoIndex + indexForThisPage) % 3
-                    } else {
-                        videoIndex % 3
-                    }
-                    Timber.e("adjustedIndex $adjustedIndex")
-
-                    if (adjustedIndex == 0) {
-                        typeForThisPage =
-                            if (typeForThisPage == VideoType.TYPE_A) VideoType.TYPE_B else VideoType.TYPE_A
-                        indexForThisPage = 0
-                    }
-
-//                    currentItemType = typeForThisPage
-                    indexForThisPage++
-
-                }
-                Timber.e("video.toDomain(typeForThisPage) ${video.toDomain(typeForThisPage).isType}")
-                video.toDomain(typeForThisPage)
-            }
-
-            Timber.e("typeForThisPage $typeForThisPage")
-            Timber.e("indexForThisPage $indexForThisPage")
-
-            currentPageLastType = typeForThisPage
-            currentPageLastIndex = indexForThisPage
+            currentPageLastType = mappingResult.nextStartingType
+            currentPageLastIndex = mappingResult.nextStartingIndex
 
             val nextKey = if (getVideoEntity.meta.isEnd) null else pageNumber + 1
             val prevKey = if (pageNumber == 1) null else pageNumber - 1
 
             return LoadResult.Page(
-                data = domainVideos,
+                data = mappingResult.videos,
                 prevKey = prevKey,
                 nextKey = nextKey
             )
