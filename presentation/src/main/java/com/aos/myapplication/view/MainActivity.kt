@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity() {
             )
             adapter = videoPagingAdapter
         }
-
     }
 
     private fun setupViewModelObserver() {

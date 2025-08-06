@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.aos.data.source.VideoPagingSource
 import com.aos.data.state.VideoState
 import com.aos.domain.model.UiGetVideoModel
@@ -17,6 +18,7 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -35,11 +37,9 @@ class MainViewModel @Inject constructor(private val searchVideoUseCase: SearchVi
     val isEmpty: LiveData<Boolean> get() = _isEmpty
 
     val pagedVideos = searchTrigger
+        .filter { query.value != "" }
         .flatMapLatest {
-            Pager(
-                config = PagingConfig(pageSize = 10),
-                pagingSourceFactory = { VideoPagingSource(query.value ?: "", searchVideoUseCase)}
-            ).flow
+            searchVideoUseCase(query.value!!)
         }.cachedIn(viewModelScope)
 
     // 비디오가 비어있는지 상태 저장

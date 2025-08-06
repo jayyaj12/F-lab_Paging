@@ -1,15 +1,16 @@
 package com.aos.domain.usecase
 
+import androidx.paging.PagingData
 import com.aos.domain.model.UiGetVideoModel
+import com.aos.domain.model.Video
 import com.aos.domain.repository.VideoRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class SearchVideoUseCase @Inject constructor(
     private val videoRepository: VideoRepository
 ) {
     suspend operator fun invoke(
-        query: String,
-        page: Int,
-        size: Int
-    ): Result<UiGetVideoModel> = videoRepository.getVideos(query, page, size)
+        query: String
+    ): Flow<PagingData<Video>> = videoRepository.getVideosPager(query)
 }
