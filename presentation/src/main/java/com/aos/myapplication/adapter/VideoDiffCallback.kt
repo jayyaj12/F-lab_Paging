@@ -1,7 +1,6 @@
-package com.aos.myapplication.view
+package com.aos.myapplication.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.aos.domain.model.UiGetVideoModel
 import com.aos.domain.model.Video
 
 class VideoDiffCallback: DiffUtil.ItemCallback<Video>() {

@@ -6,7 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aos.domain.model.Video
 import com.aos.myapplication.databinding.ItemVideoBinding
-import com.aos.myapplication.view.VideoDiffCallback
+import com.aos.myapplication.adapter.VideoDiffCallback
 
 class VideoPagingAdapter: PagingDataAdapter<Video, VideoPagingAdapter.VideoViewHolder>(
     VideoDiffCallback()

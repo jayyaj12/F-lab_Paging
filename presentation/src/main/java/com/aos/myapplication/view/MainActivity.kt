@@ -38,13 +38,14 @@ class MainActivity : AppCompatActivity() {
             val isEmpty = loadStates.refresh is LoadState.NotLoading &&
                     loadStates.append.endOfPaginationReached &&
                     videoPagingAdapter.itemCount == 0
+
             mainViewModel.isEmptyVideos(isEmpty)
         }
         with(binding.rvVideoList) {
-            adapter = videoPagingAdapter
             addItemDecoration(
                 DividerItemDecoration(context, RecyclerView.VERTICAL)
             )
+            adapter = videoPagingAdapter
         }
 
     }
