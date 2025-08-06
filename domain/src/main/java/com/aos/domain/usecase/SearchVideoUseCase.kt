@@ -12,5 +12,4 @@ class SearchVideoUseCase @Inject constructor(
         page: Int,
         size: Int
     ): Result<UiGetVideoModel> = videoRepository.getVideos(query, page, size)
-
 }

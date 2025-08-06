@@ -1,6 +1,7 @@
 package com.aos.myapplication.view
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -35,6 +36,20 @@ class MainActivity : AppCompatActivity() {
     private fun setupVideoListAdapter() {
         videoPagingAdapter = VideoPagingAdapter()
         videoPagingAdapter.addLoadStateListener { loadStates ->
+            // 에러처리 
+            val errorState = when {
+                loadStates.refresh is LoadState.Error -> loadStates.refresh as LoadState.Error
+                loadStates.prepend is LoadState.Error -> loadStates.prepend as LoadState.Error
+                loadStates.append is LoadState.Error -> loadStates.append as LoadState.Error
+                else -> null
+            }
+
+            errorState?.let {
+                Timber.e("[PagingError]: ${it.error.message}")
+                Toast.makeText(this@MainActivity, "에러 발생: ${it.error.message}", Toast.LENGTH_SHORT).show()
+            }
+            
+            // 데이터 조회 시 빈 데이터 여부 확인
             val isEmpty = loadStates.refresh is LoadState.NotLoading &&
                     loadStates.append.endOfPaginationReached &&
                     videoPagingAdapter.itemCount == 0
