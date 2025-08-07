@@ -1,11 +1,11 @@
-package com.aos.domain.model
+package com.aos.domain.entity
 
-data class UiGetVideoModel(
-    val videos: List<Video>,
+data class VideoEntity(
+    val videoEntityItems: List<VideoEntityItem>,
     val isEnd: Boolean
 )
 
-data class Video(
+data class VideoEntityItem(
     val id: String, // 고유 id
     val title: String, // 제목
     val thumbnail: String, // 비디오 썸네일

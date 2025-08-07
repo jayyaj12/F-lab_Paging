@@ -1,19 +1,19 @@
 package com.aos.myapplication.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.aos.domain.model.Video
+import com.aos.domain.entity.VideoEntityItem
 
-class VideoDiffCallback: DiffUtil.ItemCallback<Video>() {
+class VideoDiffCallback: DiffUtil.ItemCallback<VideoEntityItem>() {
     override fun areItemsTheSame(
-        oldItem: Video,
-        newItem: Video
+        oldItem: VideoEntityItem,
+        newItem: VideoEntityItem
     ): Boolean {
         return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(
-        oldItem: Video,
-        newItem: Video
+        oldItem: VideoEntityItem,
+        newItem: VideoEntityItem
     ): Boolean {
         return oldItem == newItem
     }

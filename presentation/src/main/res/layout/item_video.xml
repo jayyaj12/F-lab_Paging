@@ -6,7 +6,7 @@
 
         <variable
             name="video"
-            type="com.aos.domain.model.Video" />
+            type="com.aos.domain.entity.VideoEntityItem" />
 
         <import type="android.view.View" />
     </data>
@@ -24,7 +24,7 @@
                 android:id="@+id/iv_thumbnail"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:visibility="@{video.isType == com.aos.domain.model.VideoType.TYPE_A ? View.VISIBLE : View.GONE}"
+                android:visibility="@{video.isType == com.aos.domain.entity.VideoType.TYPE_A ? View.VISIBLE : View.GONE}"
                 app:imageUrl="@{video.thumbnail}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

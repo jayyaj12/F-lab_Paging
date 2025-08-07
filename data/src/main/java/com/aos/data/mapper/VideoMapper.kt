@@ -1,26 +1,26 @@
 package com.aos.data.mapper
 
-import com.aos.data.entity.GetVideoEntity
-import com.aos.domain.model.Video
-import com.aos.domain.model.VideoType
-import com.aos.domain.model.UiGetVideoModel
-import timber.log.Timber
+import VideoResponse
+import VideoResponseItem
+import com.aos.domain.entity.VideoEntityItem
+import com.aos.domain.entity.VideoType
+
 // 매핑 결과를 담을 데이터 클래스
 data class VideoPageMappingResult(
-    val videos: List<Video>,
+    val videoEntityItems: List<VideoEntityItem>,
     val nextStartingType: VideoType,
     val nextStartingIndex: Int
 )
 
-fun com.aos.data.entity.Video.toDomain(type: VideoType): Video =
-    Video(
+fun VideoResponseItem.toDomain(type: VideoType): VideoEntityItem =
+    VideoEntityItem(
         id = "${this.title}_${this.url}".hashCode().toString(),
         title = this.title,
         thumbnail = this.thumbnail,
         isType = type
     )
 
-fun GetVideoEntity.toVideoModel(initialType: VideoType, initialIndex: Int): VideoPageMappingResult {
+fun VideoResponse.toVideoModel(initialType: VideoType, initialIndex: Int): VideoPageMappingResult {
     var typeForThisPage = initialType
     var indexForThisPage = initialIndex
 
@@ -51,7 +51,7 @@ fun GetVideoEntity.toVideoModel(initialType: VideoType, initialIndex: Int): Vide
     }
 
     return VideoPageMappingResult(
-        videos = domainVideos,
+        videoEntityItems = domainVideos,
         nextStartingType = typeForThisPage,
         nextStartingIndex = typeCount
     )

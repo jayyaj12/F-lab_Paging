@@ -4,16 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.aos.domain.model.Video
+import com.aos.domain.entity.VideoEntityItem
 import com.aos.myapplication.databinding.ItemVideoBinding
-import com.aos.myapplication.adapter.VideoDiffCallback
 
-class VideoPagingAdapter: PagingDataAdapter<Video, VideoPagingAdapter.VideoViewHolder>(
+class VideoPagingAdapter: PagingDataAdapter<VideoEntityItem, VideoPagingAdapter.VideoViewHolder>(
     VideoDiffCallback()
 ) {
 
     inner class VideoViewHolder(private val binding: ItemVideoBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Video) {
+        fun bind(item: VideoEntityItem) {
             binding.video = item
             binding.executePendingBindings()
         }

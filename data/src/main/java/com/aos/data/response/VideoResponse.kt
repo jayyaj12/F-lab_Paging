@@ -1,17 +1,15 @@
-@file:OptIn(kotlinx.serialization.InternalSerializationApi::class)
-package com.aos.data.entity
+@file:OptIn(InternalSerializationApi::class)
 
-import android.text.SpannedString
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GetVideoEntity(
+data class VideoResponse(
     val meta: Meta,
     @SerialName("documents")
-    val videos: List<Video>
+    val videos: List<VideoResponseItem>
 )
-
 @Serializable
 data class Meta(
     @SerialName("total_count")
@@ -21,9 +19,8 @@ data class Meta(
     @SerialName("is_end")
     val isEnd: Boolean
 )
-
 @Serializable
-data class Video(
+data class VideoResponseItem(
     val title: String,
     val url: String,
     @SerialName("datetime")

@@ -1,4 +1,4 @@
-package com.aos.myapplication.module
+package com.aos.myapplication.di
 
 import com.aos.domain.repository.VideoRepository
 import com.aos.domain.usecase.SearchVideoUseCase

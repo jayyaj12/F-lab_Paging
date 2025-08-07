@@ -1,6 +1,6 @@
-package com.aos.myapplication.module
+package com.aos.myapplication.di
 
-import com.aos.data.datasource.VideoRemoteDataSourceImpl
+import com.aos.data.api.VideoApi
 import com.aos.data.repository.VideoRepositoryImpl
 import com.aos.domain.repository.VideoRepository
 import dagger.Module
@@ -15,7 +15,7 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideVideoRepository(videoRemoteDataSourceImpl: VideoRemoteDataSourceImpl): VideoRepository =
-        VideoRepositoryImpl(videoRemoteDataSourceImpl)
+    fun provideVideoRepository(videoApi: VideoApi): VideoRepository =
+        VideoRepositoryImpl(videoApi)
 
 }
