@@ -2,7 +2,9 @@ package com.aos.data.mapper
 
 import VideoResponse
 import VideoResponseItem
+import com.aos.data.local.entity.VideoEntity
 import com.aos.domain.entity.VideoEntityItem
+import com.aos.domain.entity.VideoLocalItem
 import com.aos.domain.entity.VideoType
 
 // 매핑 결과를 담을 데이터 클래스
@@ -54,5 +56,21 @@ fun VideoResponse.toVideoModel(initialType: VideoType, initialIndex: Int): Video
         videoEntityItems = domainVideos,
         nextStartingType = typeForThisPage,
         nextStartingIndex = typeCount
+    )
+}
+
+fun VideoEntity.toVideoLocalItem(): VideoLocalItem {
+    return VideoLocalItem(
+        id = this.id,
+        title = this.title,
+        thumbnail = this.thumbnail
+    )
+}
+
+fun VideoEntityItem.toVideoEntity(): VideoEntity {
+    return VideoEntity(
+        id = this.id,
+        title = this.title,
+        thumbnail = this.thumbnail
     )
 }

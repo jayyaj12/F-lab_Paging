@@ -1,4 +1,4 @@
-package com.aos.myapplication.view.search
+package com.aos.myapplication.view.video.favorite
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,19 +6,21 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.aos.domain.entity.VideoEntityItem
+import com.aos.domain.entity.VideoLocalItem
 import com.aos.myapplication.databinding.ItemVideoBinding
+import com.aos.myapplication.databinding.ItemVideoFavoriteBinding
+import timber.log.Timber
 
-class VideoSearchPagingAdapter(private val favoriteBtnText: String, private val clickedFavoriteBtn: (VideoEntityItem) -> Unit): PagingDataAdapter<VideoEntityItem, VideoSearchPagingAdapter.VideoViewHolder>(
+class VideoFavoritePagingAdapter(private val clickedFavoriteBtn: (VideoLocalItem) -> Unit): PagingDataAdapter<VideoLocalItem, VideoFavoritePagingAdapter.VideoViewHolder>(
     diffCallback
 ) {
 
-    inner class VideoViewHolder(private val binding: ItemVideoBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: VideoEntityItem) {
+    inner class VideoViewHolder(private val binding: ItemVideoFavoriteBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: VideoLocalItem) {
             with(binding) {
                 video = item
                 executePendingBindings()
 
-                btnFavorite.text = favoriteBtnText
                 btnFavorite.setOnClickListener {
                     clickedFavoriteBtn(item)
                 }
@@ -27,7 +29,7 @@ class VideoSearchPagingAdapter(private val favoriteBtnText: String, private val 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
-        val binding = ItemVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemVideoFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return VideoViewHolder(binding)
     }
 
@@ -38,10 +40,10 @@ class VideoSearchPagingAdapter(private val favoriteBtnText: String, private val 
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<VideoEntityItem>() {
-            override fun areItemsTheSame(old: VideoEntityItem, new: VideoEntityItem) =
+        private val diffCallback = object : DiffUtil.ItemCallback<VideoLocalItem>() {
+            override fun areItemsTheSame(old: VideoLocalItem, new: VideoLocalItem) =
                 old.id == new.id
-            override fun areContentsTheSame(old: VideoEntityItem, new: VideoEntityItem) = old == new
+            override fun areContentsTheSame(old: VideoLocalItem, new: VideoLocalItem) = old == new
         }
     }
 }

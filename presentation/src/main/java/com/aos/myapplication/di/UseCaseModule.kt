@@ -15,11 +15,13 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
 
-    @Singleton
     @Provides
     fun provideSelectVideoUseCase(videoRepository: VideoRepository) = SearchVideoUseCase(videoRepository)
+    @Provides
     fun provideAddFavoriteVideoUseCase(videoRepository: VideoRepository) = AddFavoriteVideoUseCase(videoRepository)
+    @Provides
     fun provideDeleteFavoriteVideoUseCase(videoRepository: VideoRepository) = DeleteFavoriteVideoUseCase(videoRepository)
+    @Provides
     fun provideObserveFavoriteVideoUseCase(videoRepository: VideoRepository) = ObserveFavoriteVideoUseCase(videoRepository)
 
 }

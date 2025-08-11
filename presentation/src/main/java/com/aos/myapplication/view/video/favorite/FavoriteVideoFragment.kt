@@ -1,19 +1,23 @@
-package com.aos.myapplication.view.favorite
+package com.aos.myapplication.view.video.favorite
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.aos.myapplication.databinding.FragmentFavoriteVideoBinding
-import com.aos.myapplication.view.search.VideoSearchPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -23,7 +27,7 @@ class FavoriteVideoFragment : Fragment() {
     private val viewModel by viewModels<FavoriteVideoViewModel>()
 
     private var _binding: FragmentFavoriteVideoBinding? = null
-    val binding get() =  _binding!!
+    val binding get() = _binding ?: throw IllegalStateException("Binding is not initialized")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +46,7 @@ class FavoriteVideoFragment : Fragment() {
     }
 
     private fun setupVideoList() {
-        videoFavoritePagingAdapter = VideoFavoritePagingAdapter("즐겨찾기 삭제") { item ->
+        videoFavoritePagingAdapter = VideoFavoritePagingAdapter { item ->
             // 즐겨찾기 버튼 삭제 버튼 클릭
             viewModel.deleteFavoriteVideo(item)
         }
@@ -60,8 +64,15 @@ class FavoriteVideoFragment : Fragment() {
     private fun setupViewModelObserver() {
         lifecycleScope.launch {
             viewModel.pagedVideos.collectLatest {
-                Timber.e("pagedVideos $it")
                 videoFavoritePagingAdapter.submitData(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.eventMessage.collect { msg ->
+                    Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

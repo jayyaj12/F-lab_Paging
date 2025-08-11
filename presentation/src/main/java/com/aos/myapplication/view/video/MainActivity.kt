@@ -1,4 +1,4 @@
-package com.aos.myapplication.view
+package com.aos.myapplication.view.video
 
 import android.os.Bundle
 import androidx.activity.viewModels

@@ -1,4 +1,4 @@
-package com.aos.myapplication.view.search
+package com.aos.myapplication.view.video.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +26,7 @@ class SearchVideoFragment : Fragment() {
     private lateinit var videoSearchPagingAdapter: VideoSearchPagingAdapter
 
     private var _binding: FragmentSearchVideoBinding? = null
-    val binding get() = _binding!!
+    val binding get() = _binding ?: throw IllegalStateException("Binding is not initialized")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -45,7 +47,7 @@ class SearchVideoFragment : Fragment() {
     }
 
     private fun setupVideoList() {
-        videoSearchPagingAdapter = VideoSearchPagingAdapter("즐겨찾기 등록") { item ->
+        videoSearchPagingAdapter = VideoSearchPagingAdapter { item ->
             // 즐겨찾기 버튼 클릭됨
             viewModel.onClickedAddFavorite(item)
         }
@@ -61,12 +63,12 @@ class SearchVideoFragment : Fragment() {
 
         videoSearchPagingAdapter.addLoadStateListener { loadStates ->
             // 에러처리
-            val errorState = when {
-                loadStates.refresh is LoadState.Error -> loadStates.refresh as LoadState.Error
-                loadStates.prepend is LoadState.Error -> loadStates.prepend as LoadState.Error
-                loadStates.append is LoadState.Error -> loadStates.append as LoadState.Error
-                else -> null
-            }
+            val errorState = loadStates.source.append as? LoadState.Error
+                ?: loadStates.source.prepend as? LoadState.Error
+                ?: loadStates.source.refresh as? LoadState.Error
+                ?: loadStates.append as? LoadState.Error
+                ?: loadStates.prepend as? LoadState.Error
+                ?: loadStates.refresh as? LoadState.Error
 
             errorState?.let {
                 Timber.e("[PagingError]: ${it.error.message}")
@@ -74,8 +76,9 @@ class SearchVideoFragment : Fragment() {
             }
 
             // 데이터 조회 시 빈 데이터 여부 확인
-            val isEmpty =
-                loadStates.refresh is LoadState.NotLoading && loadStates.append.endOfPaginationReached && videoSearchPagingAdapter.itemCount == 0
+            val isEmpty = loadStates.refresh is LoadState.NotLoading &&
+                    loadStates.append.endOfPaginationReached &&
+                    videoSearchPagingAdapter.itemCount < 1
 
             viewModel.isEmptyVideos(isEmpty)
         }
@@ -85,6 +88,14 @@ class SearchVideoFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.pagedVideos.collectLatest {
                 videoSearchPagingAdapter.submitData(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.eventMessage.collect { msg ->
+                    Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

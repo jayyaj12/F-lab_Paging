@@ -7,6 +7,8 @@ import androidx.paging.map
 import com.aos.data.api.VideoApi
 import com.aos.data.local.dao.VideoDao
 import com.aos.data.local.entity.VideoEntity
+import com.aos.data.mapper.toVideoEntity
+import com.aos.data.mapper.toVideoLocalItem
 import com.aos.data.source.VideoPagingSource
 import com.aos.domain.entity.VideoEntityItem
 import com.aos.domain.entity.VideoLocalItem
@@ -34,14 +36,13 @@ class VideoRepositoryImpl @Inject constructor(
             pagingSourceFactory = { videoDao.observeTodos() }
         ).flow.map {
             it.map { entity ->
-                Timber.e("entity $entity")
-                VideoLocalItem(id = entity.id, title = entity.title, thumbnail = entity.thumbnail)
+                entity.toVideoLocalItem()
             }
         }
     }
 
     override suspend fun insertVideo(video: VideoEntityItem) {
-        videoDao.insert(VideoEntity(id = video.id, title = video.title, thumbnail = video.thumbnail))
+        videoDao.insert(video.toVideoEntity())
     }
 
     override suspend fun delete(video: VideoLocalItem) {

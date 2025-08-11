@@ -1,4 +1,4 @@
-package com.aos.myapplication.view.search
+package com.aos.myapplication.view.video.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,9 @@ import com.aos.domain.usecase.AddFavoriteVideoUseCase
 import com.aos.domain.usecase.SearchVideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
@@ -18,8 +20,11 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class SearchVideoViewModel @Inject constructor(private val searchVideoUseCase: SearchVideoUseCase, private val addFavoriteVideoUseCase: AddFavoriteVideoUseCase) : ViewModel() {
 
+    private val _eventMessage = MutableSharedFlow<String>()
+    val eventMessage: SharedFlow<String> = _eventMessage
+
     // 검색어 저장
-    var query = MutableLiveData("")
+    val query = MutableStateFlow("")
 
     // 검색 트리거
     private val _searchTrigger = MutableStateFlow(false)
@@ -42,7 +47,6 @@ class SearchVideoViewModel @Inject constructor(private val searchVideoUseCase: S
 
     // 검색 버튼 클릭
     fun onClickedSearchBtn() {
-        // 비어 있지 않을때만 검색
         _searchTrigger.value = !searchTrigger.value
     }
 
@@ -53,7 +57,14 @@ class SearchVideoViewModel @Inject constructor(private val searchVideoUseCase: S
 
     fun onClickedAddFavorite(video: VideoEntityItem) {
         viewModelScope.launch {
-            addFavoriteVideoUseCase(video)
+            runCatching {
+                addFavoriteVideoUseCase(video)
+            }.onSuccess {
+                _eventMessage.emit("즐겨찾기가 추가되었습니다.")
+            }.onFailure {
+                // Complete the code between the fim markers
+                _eventMessage.emit("즐겨찾기 추가 실패하였습니다.")
+            }
         }
     }
 }
