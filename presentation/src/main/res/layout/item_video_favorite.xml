@@ -6,7 +6,7 @@
 
         <variable
             name="video"
-            type="com.aos.domain.entity.VideoEntityItem" />
+            type="com.aos.domain.entity.VideoLocalItem" />
 
         <import type="android.view.View" />
     </data>
@@ -24,7 +24,6 @@
                 android:id="@+id/iv_thumbnail"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:visibility="@{video.isType == com.aos.domain.entity.VideoType.TYPE_A ? View.VISIBLE : View.GONE}"
                 app:imageUrl="@{video.thumbnail}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -50,22 +49,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#FF0000"
-            android:visibility="@{video.last ? View.VISIBLE : View.GONE}" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:text="모든 검색 내용을 표시하였습니다."
-            android:textSize="20dp"
-            android:textColor="#FF0000"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:visibility="@{video.last ? View.VISIBLE : View.GONE}" />
     </LinearLayout>
 
 </layout>

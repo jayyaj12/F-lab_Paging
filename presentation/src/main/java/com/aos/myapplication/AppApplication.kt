@@ -1,4 +1,4 @@
-package com.aos.myapplication.di
+package com.aos.myapplication
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

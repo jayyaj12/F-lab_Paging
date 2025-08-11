@@ -2,39 +2,52 @@ package com.aos.data.source
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.aos.data.api.VideoService
-import com.aos.domain.model.Video
-import com.aos.domain.usecase.SearchVideoUseCase
-import timber.log.Timber
-import javax.inject.Inject
+import com.aos.data.api.VideoApi
+import com.aos.data.mapper.toVideoModel
+import com.aos.domain.entity.VideoEntityItem
+import com.aos.domain.entity.VideoType
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class VideoPagingSource(
     private val query: String,
-    private val searchVideoUseCase: SearchVideoUseCase
-) :
-    PagingSource<Int, Video>() {
+    private val videoApi: VideoApi
+) : PagingSource<Int, VideoEntityItem>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Video> {
-        val page = params.key ?: 1
-        return searchVideoUseCase(query, page, params.loadSize).fold(
-            onSuccess = { videoModel ->
-                val videos = videoModel.videos.toMutableList()
-                if (videoModel.isEnd && videos.isNotEmpty()) {
-                    videos.last().isLast = true
-                }
+    var currentPageLastType: VideoType = VideoType.TYPE_B // 마지막 타입 저장 변수
+    var currentPageLastIndex = 0 // 마지막 타입이 몇번 추가되었는지 판단하는 변수
 
-                LoadResult.Page(
-                    data = videos,
-                    prevKey = if (page == 1) null else page - 1,
-                    nextKey = if (videoModel.isEnd) null else page + 1
-                )
-            },onFailure = {
-                LoadResult.Error(it)
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, VideoEntityItem> {
+        val pageNumber = params.key ?: 1
+        val pageSize = params.loadSize
+
+        return runCatching {
+            val videoResponse = withContext(Dispatchers.IO) {
+                videoApi.getVideo(query, pageNumber, pageSize)
             }
-        )
+
+            val mappingResult = videoResponse.toVideoModel(
+                initialType = currentPageLastType,
+                initialIndex = currentPageLastIndex
+            )
+
+            currentPageLastType = mappingResult.nextStartingType
+            currentPageLastIndex = mappingResult.nextStartingIndex
+
+            val nextKey = if (videoResponse.meta.isEnd) null else pageNumber + 1
+            val prevKey = if (pageNumber == 1) null else pageNumber - 1
+
+            LoadResult.Page(
+                data = mappingResult.videoEntityItems,
+                prevKey = prevKey,
+                nextKey = nextKey
+            )
+        }.getOrElse {
+            LoadResult.Error(it)
+        }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Video>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, VideoEntityItem>): Int? {
         return state.anchorPosition?.let { anchor ->
             state.closestPageToPosition(anchor)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchor)?.nextKey?.minus(1)

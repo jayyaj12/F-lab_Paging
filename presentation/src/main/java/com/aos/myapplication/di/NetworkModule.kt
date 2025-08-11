@@ -1,13 +1,13 @@
-package com.aos.myapplication.module
+package com.aos.myapplication.di
 
 import com.aos.data.BuildConfig
-import com.aos.data.util.CustomCallAdapterFactory
-import com.aos.data.util.HeaderInterceptor
+import com.aos.data.api.VideoApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -17,24 +17,15 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ApiModule {
+object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideHeaderInterceptor(): HeaderInterceptor {
-        return HeaderInterceptor()
-    }
-
-    @Singleton
-    @Provides
-    fun provideOkHttpClient(
-        headerInterceptor: HeaderInterceptor,
-    ) = run {
+    fun provideOkHttpClient() = run {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .addInterceptor(headerInterceptor)
             .build()
     }
 
@@ -44,7 +35,6 @@ object ApiModule {
         Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(BuildConfig.KAKAO_SEARCH_VIDEO_URL)
-            .addCallAdapterFactory(CustomCallAdapterFactory())
             .addConverterFactory(
                 Json {
                     isLenient = true
@@ -55,4 +45,8 @@ object ApiModule {
             )
             .build()
     }
+
+    @Singleton
+    @Provides
+    fun provideVideoApi(retrofit: Retrofit) = retrofit.create(VideoApi::class.java)
 }

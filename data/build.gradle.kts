@@ -51,8 +51,15 @@ android {
 dependencies {
     implementation(project(":domain"))
 
+    val room_version = "2.7.2"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-paging:$room_version")
+
     // paging
     implementation("androidx.paging:paging-runtime:3.3.6")
+    implementation("androidx.paging:paging-runtime-ktx:3.3.2")
     
     // timber
     implementation("com.jakewharton.timber:timber:5.0.1")
