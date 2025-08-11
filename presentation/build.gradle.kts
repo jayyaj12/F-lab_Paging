@@ -48,7 +48,14 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
+    
+    val room_version = "2.7.2"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
 
+    // viewPager
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
     // paging
     implementation("androidx.paging:paging-runtime:3.3.6")
 
@@ -74,6 +81,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
+    implementation ("androidx.fragment:fragment-ktx:1.8.8")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
