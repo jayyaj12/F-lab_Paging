@@ -1,4 +1,4 @@
-package com.aos.myapplication.adapter
+package com.aos.myapplication.view.search
 
 import androidx.recyclerview.widget.DiffUtil
 import com.aos.domain.entity.VideoEntityItem

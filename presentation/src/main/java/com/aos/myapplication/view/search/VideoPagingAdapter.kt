@@ -1,4 +1,4 @@
-package com.aos.myapplication.adapter
+package com.aos.myapplication.view.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
