@@ -37,7 +37,7 @@ class SearchVideoViewModel @Inject constructor(private val searchVideoUseCase: S
     val pagedVideos = searchTrigger
         .filter { query.value != "" }
         .flatMapLatest {
-            searchVideoUseCase(query.value!!)
+            searchVideoUseCase(query.value)
         }.cachedIn(viewModelScope)
 
     // 비디오가 비어있는지 상태 저장
