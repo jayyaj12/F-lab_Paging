@@ -48,46 +48,37 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
-    
-    val room_version = "2.7.2"
-    implementation("androidx.room:room-runtime:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
 
-    // viewPager
-    implementation("androidx.viewpager2:viewpager2:1.1.0")
-    // paging
-    implementation("androidx.paging:paging-runtime:3.3.6")
+    // Room
+    implementation(libs.bundles.room)
+    kapt(libs.androidx.room.compiler)
 
-    // glide
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    // ViewPager2
+    implementation(libs.androidx.viewpager2)
 
-    // hilt
-    implementation("com.google.dagger:hilt-android:2.56.2")
-    kapt("com.google.dagger:hilt-compiler:2.56.2")
+    // Paging
+    implementation(libs.bundles.paging)
 
-    // timber
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    // Glide
+    implementation(libs.glide)
 
-    // retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    // Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-    // okhttp
-    implementation("com.squareup.okhttp3:okhttp:5.1.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.1.0")
+    // Timber
+    implementation(libs.timber)
 
-    implementation("androidx.activity:activity-ktx:1.10.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation ("androidx.fragment:fragment-ktx:1.8.8")
+    // Network (Retrofit + Serialization + OkHttp)
+    implementation(libs.bundles.network)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    // AndroidX core set and UI components
+    implementation(libs.bundles.androidx.core)
     implementation(libs.androidx.activity)
+    implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.fragment)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -37,10 +37,10 @@ android {
 
 dependencies {
     // paging
-    implementation("androidx.paging:paging-runtime:3.3.6")
+    implementation(libs.androidx.paging.runtime)
 
-    implementation("com.google.dagger:hilt-android:2.56.2")
-    kapt("com.google.dagger:hilt-compiler:2.56.2")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

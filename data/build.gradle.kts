@@ -51,30 +51,25 @@ android {
 dependencies {
     implementation(project(":domain"))
 
-    val room_version = "2.7.2"
-    implementation("androidx.room:room-runtime:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
-    implementation("androidx.room:room-paging:$room_version")
+    // Room
+    implementation(libs.bundles.room)
+    implementation(libs.androidx.room.paging)
+    kapt(libs.androidx.room.compiler)
 
     // paging
-    implementation("androidx.paging:paging-runtime:3.3.6")
-    implementation("androidx.paging:paging-runtime-ktx:3.3.2")
+    implementation(libs.bundles.paging)
     
     // timber
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation(libs.timber)
 
-    implementation("com.google.dagger:hilt-android:2.56.2")
-    kapt("com.google.dagger:hilt-compiler:2.56.2")
+    // hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-    // retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    // network (retrofit + serialization + okhttp)
+    implementation(libs.bundles.network)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    implementation(libs.bundles.androidx.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
