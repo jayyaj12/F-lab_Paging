@@ -86,8 +86,10 @@ class SearchVideoFragment : Fragment() {
 
     private fun setupViewModelObserver() {
         lifecycleScope.launch {
-            viewModel.pagedVideos.collectLatest {
-                videoSearchPagingAdapter.submitData(it)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.pagedVideos.collectLatest {
+                    videoSearchPagingAdapter.submitData(it)
+                }
             }
         }
 

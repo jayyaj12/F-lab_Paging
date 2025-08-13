@@ -14,10 +14,10 @@ import com.aos.domain.entity.VideoEntityItem
 import com.aos.domain.entity.VideoLocalItem
 import com.aos.domain.entity.VideoType
 import com.aos.domain.repository.VideoRepository
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
+import javax.inject.Inject
 
 class VideoRepositoryImpl @Inject constructor(
     private val videoApi: VideoApi,
@@ -33,7 +33,7 @@ class VideoRepositoryImpl @Inject constructor(
     override fun observeVideo(): Flow<PagingData<VideoLocalItem>> {
         return Pager(
             config = PagingConfig(pageSize = 10),
-            pagingSourceFactory = { videoDao.observeTodos() }
+            pagingSourceFactory = { videoDao.observeVideos() }
         ).flow.map {
             it.map { entity ->
                 entity.toVideoLocalItem()

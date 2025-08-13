@@ -1,6 +1,7 @@
 package com.aos.myapplication
 
 import android.app.Application
+import com.aos.data.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -10,7 +11,9 @@ class AppApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Timber.Forest.plant(Timber.DebugTree())
+        if (BuildConfig.DEBUG) {
+            Timber.Forest.plant(Timber.DebugTree())
+        }
     }
 
 }

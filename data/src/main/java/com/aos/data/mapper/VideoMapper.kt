@@ -1,8 +1,8 @@
 package com.aos.data.mapper
 
-import VideoResponse
-import VideoResponseItem
 import com.aos.data.local.entity.VideoEntity
+import com.aos.data.response.VideoResponse
+import com.aos.data.response.VideoResponseItem
 import com.aos.domain.entity.VideoEntityItem
 import com.aos.domain.entity.VideoLocalItem
 import com.aos.domain.entity.VideoType
@@ -19,7 +19,7 @@ fun VideoResponseItem.toDomain(type: VideoType): VideoEntityItem =
         id = "${this.title}_${this.url}".hashCode().toString(),
         title = this.title,
         thumbnail = this.thumbnail,
-        isType = type
+        type = type
     )
 
 fun VideoResponse.toVideoModel(initialType: VideoType, initialIndex: Int): VideoPageMappingResult {

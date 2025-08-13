@@ -2,12 +2,14 @@ package com.aos.data.source
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.aos.data.BuildConfig
 import com.aos.data.api.VideoApi
 import com.aos.data.mapper.toVideoModel
 import com.aos.domain.entity.VideoEntityItem
 import com.aos.domain.entity.VideoType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.http.Headers
 
 class VideoPagingSource(
     private val query: String,
@@ -23,7 +25,7 @@ class VideoPagingSource(
 
         return runCatching {
             val videoResponse = withContext(Dispatchers.IO) {
-                videoApi.getVideo(query, pageNumber, pageSize)
+                videoApi.getVideo("KakaoAK ${BuildConfig.KAKAO_API_KEY}", query, pageNumber, pageSize)
             }
 
             val mappingResult = videoResponse.toVideoModel(

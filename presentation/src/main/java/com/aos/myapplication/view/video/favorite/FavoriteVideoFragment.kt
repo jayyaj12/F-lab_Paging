@@ -63,8 +63,10 @@ class FavoriteVideoFragment : Fragment() {
 
     private fun setupViewModelObserver() {
         lifecycleScope.launch {
-            viewModel.pagedVideos.collectLatest {
-                videoFavoritePagingAdapter.submitData(it)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.pagedVideos.collectLatest {
+                    videoFavoritePagingAdapter.submitData(it)
+                }
             }
         }
 

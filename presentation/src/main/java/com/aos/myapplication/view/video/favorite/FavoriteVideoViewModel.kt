@@ -10,7 +10,6 @@ import com.aos.domain.entity.VideoLocalItem
 import com.aos.domain.usecase.DeleteFavoriteVideoUseCase
 import com.aos.domain.usecase.ObserveFavoriteVideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -21,6 +20,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteVideoViewModel @Inject constructor(

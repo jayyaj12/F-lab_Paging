@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface VideoDao {
     @Query("SELECT * FROM video ORDER BY title ASC")
-    fun observeTodos(): PagingSource<Int, VideoEntity>
+    fun observeVideos(): PagingSource<Int, VideoEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: VideoEntity)

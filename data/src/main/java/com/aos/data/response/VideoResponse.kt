@@ -1,4 +1,5 @@
 @file:OptIn(InternalSerializationApi::class)
+package com.aos.data.response
 
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
