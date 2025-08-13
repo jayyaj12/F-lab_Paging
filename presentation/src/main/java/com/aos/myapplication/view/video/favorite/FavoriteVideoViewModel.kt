@@ -33,11 +33,6 @@ class FavoriteVideoViewModel @Inject constructor(
 
     val pagedVideos = observeFavoriteVideoUseCase()
         .cachedIn(viewModelScope)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily, // 또는 WhileSubscribed(5000)
-            initialValue = PagingData.empty()
-        )
 
     fun deleteFavoriteVideo(video: VideoLocalItem) {
         viewModelScope.launch {
