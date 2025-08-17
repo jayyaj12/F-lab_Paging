@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aos.domain.entity.VideoEntity
 import com.aos.myapplication.databinding.ItemVideoFavoriteBinding
 
-class VideoFavoritePagingAdapter(private val clickedFavoriteBtn: (VideoEntity) -> Unit): PagingDataAdapter<VideoEntity, VideoFavoritePagingAdapter.VideoViewHolder>(
+class VideoFavoritePagingAdapter(private val clickedFavoriteBtn: (VideoEntity) -> Unit, private val clickedOpenDetailBtn: (Int) -> Unit): PagingDataAdapter<VideoEntity, VideoFavoritePagingAdapter.VideoViewHolder>(
     diffCallback
 ) {
 
@@ -20,6 +20,10 @@ class VideoFavoritePagingAdapter(private val clickedFavoriteBtn: (VideoEntity) -
 
                 btnFavorite.setOnClickListener {
                     clickedFavoriteBtn(item)
+                }
+
+                clContainer.setOnClickListener {
+                    clickedOpenDetailBtn(bindingAdapterPosition)
                 }
             }
         }

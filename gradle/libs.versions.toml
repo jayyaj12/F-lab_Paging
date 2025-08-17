@@ -1,5 +1,6 @@
 [versions]
 agp = "8.6.0"
+coilComposeVersion = "2.7.0"
 kotlin = "2.0.0"
 room = "2.7.2"
 hilt = "2.56.2"
@@ -21,6 +22,7 @@ composeBom = "2024.09.00"
 [libraries]
 androidx-core-ktx = "androidx.core:core-ktx:1.13.1"
 androidx-appcompat = "androidx.appcompat:appcompat:1.7.0"
+coil-kt-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilComposeVersion" }
 material = "com.google.android.material:material:1.12.0"
 androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }

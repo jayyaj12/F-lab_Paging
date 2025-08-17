@@ -1,7 +1,9 @@
 package com.aos.myapplication.di
 
 import com.aos.domain.repository.VideoRepository
+import com.aos.domain.usecase.AddFavoriteListOfVideoUseCase
 import com.aos.domain.usecase.AddFavoriteVideoUseCase
+import com.aos.domain.usecase.DeleteFavoriteListOfVideoUseCase
 import com.aos.domain.usecase.DeleteFavoriteVideoUseCase
 import com.aos.domain.usecase.ObserveFavoriteVideoUseCase
 import com.aos.domain.usecase.SearchVideoUseCase
@@ -16,12 +18,27 @@ import javax.inject.Singleton
 object UseCaseModule {
 
     @Provides
-    fun provideSelectVideoUseCase(videoRepository: VideoRepository) = SearchVideoUseCase(videoRepository)
+    fun provideSelectVideoUseCase(videoRepository: VideoRepository) =
+        SearchVideoUseCase(videoRepository)
+
     @Provides
-    fun provideAddFavoriteVideoUseCase(videoRepository: VideoRepository) = AddFavoriteVideoUseCase(videoRepository)
+    fun provideAddFavoriteVideoUseCase(videoRepository: VideoRepository) =
+        AddFavoriteVideoUseCase(videoRepository)
+
     @Provides
-    fun provideDeleteFavoriteVideoUseCase(videoRepository: VideoRepository) = DeleteFavoriteVideoUseCase(videoRepository)
+    fun provideDeleteFavoriteVideoUseCase(videoRepository: VideoRepository) =
+        DeleteFavoriteVideoUseCase(videoRepository)
+
     @Provides
-    fun provideObserveFavoriteVideoUseCase(videoRepository: VideoRepository) = ObserveFavoriteVideoUseCase(videoRepository)
+    fun provideObserveFavoriteVideoUseCase(videoRepository: VideoRepository) =
+        ObserveFavoriteVideoUseCase(videoRepository)
+
+    @Provides
+    fun provideAddFavoriteListOfVideoUseCase(videoRepository: VideoRepository) =
+        AddFavoriteListOfVideoUseCase(videoRepository)
+
+    @Provides
+    fun provideDeleteFavoriteListOfVideoUseCase(videoRepository: VideoRepository) =
+        DeleteFavoriteListOfVideoUseCase(videoRepository)
 
 }

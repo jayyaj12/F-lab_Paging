@@ -51,6 +51,9 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
 
+    // compose
+    implementation(libs.coil.kt.coil.compose)
+
     // Room
     implementation(libs.bundles.room)
     implementation(libs.androidx.lifecycle.runtime.ktx)

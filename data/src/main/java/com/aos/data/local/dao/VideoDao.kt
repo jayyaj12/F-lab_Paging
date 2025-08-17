@@ -15,6 +15,12 @@ interface VideoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: VideoRoomEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(entity: List<VideoRoomEntity>)
+
     @Query("DELETE FROM video WHERE id = :id")
     suspend fun delete(id: String)
+
+    @Query("DELETE FROM video WHERE id IN (:ids)")
+    suspend fun delete(ids: List<String>)
 }

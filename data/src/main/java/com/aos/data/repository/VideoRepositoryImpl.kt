@@ -13,6 +13,7 @@ import com.aos.domain.entity.VideoEntity
 import com.aos.domain.repository.VideoRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import javax.inject.Inject
 
 class VideoRepositoryImpl @Inject constructor(
@@ -41,7 +42,17 @@ class VideoRepositoryImpl @Inject constructor(
         videoDao.insert(video.toVideoRoomEntity())
     }
 
+    override suspend fun insertListOfVideo(videos: List<VideoEntity>) {
+        videoDao.insert(videos.map { it.toVideoRoomEntity() })
+    }
+
     override suspend fun delete(video: VideoEntity) {
         videoDao.delete(video.id)
+    }
+
+    override suspend fun deleteListOfVideo(videos: List<VideoEntity>) {
+        val ids = videos.map { it.id }
+        Timber.e("ids $ids")
+        videoDao.delete(ids)
     }
 }

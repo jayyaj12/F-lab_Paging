@@ -70,6 +70,7 @@ fun VideoRoomEntity.toVideoEntity(): VideoEntity {
     return VideoEntity(
         id = this.id,
         title = this.title,
-        thumbnail = this.thumbnail
+        thumbnail = this.thumbnail,
+        isFavorite = true
     )
 }
