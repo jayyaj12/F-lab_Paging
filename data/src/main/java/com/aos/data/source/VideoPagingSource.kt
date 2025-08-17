@@ -5,21 +5,20 @@ import androidx.paging.PagingState
 import com.aos.data.BuildConfig
 import com.aos.data.api.VideoApi
 import com.aos.data.mapper.toVideoModel
-import com.aos.domain.entity.VideoEntityItem
+import com.aos.domain.entity.VideoEntity
 import com.aos.domain.entity.VideoType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.http.Headers
 
 class VideoPagingSource(
     private val query: String,
     private val videoApi: VideoApi
-) : PagingSource<Int, VideoEntityItem>() {
+) : PagingSource<Int, VideoEntity>() {
 
     var currentPageLastType: VideoType = VideoType.TYPE_B // 마지막 타입 저장 변수
     var currentPageLastIndex = 0 // 마지막 타입이 몇번 추가되었는지 판단하는 변수
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, VideoEntityItem> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, VideoEntity> {
         val pageNumber = params.key ?: 1
         val pageSize = params.loadSize
 
@@ -40,7 +39,7 @@ class VideoPagingSource(
             val prevKey = if (pageNumber == 1) null else pageNumber - 1
 
             LoadResult.Page(
-                data = mappingResult.videoEntityItems,
+                data = mappingResult.videoEntities,
                 prevKey = prevKey,
                 nextKey = nextKey
             )
@@ -49,7 +48,7 @@ class VideoPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, VideoEntityItem>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, VideoEntity>): Int? {
         return state.anchorPosition?.let { anchor ->
             state.closestPageToPosition(anchor)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchor)?.nextKey?.minus(1)

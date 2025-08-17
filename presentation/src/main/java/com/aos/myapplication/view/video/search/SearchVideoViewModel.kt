@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.aos.domain.entity.VideoEntityItem
+import com.aos.domain.entity.VideoEntity
 import com.aos.domain.usecase.AddFavoriteVideoUseCase
 import com.aos.domain.usecase.SearchVideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -55,7 +55,7 @@ class SearchVideoViewModel @Inject constructor(private val searchVideoUseCase: S
         query.value = s.toString()
     }
 
-    fun onClickedAddFavorite(video: VideoEntityItem) {
+    fun onClickedAddFavorite(video: VideoEntity) {
         viewModelScope.launch {
             runCatching {
                 addFavoriteVideoUseCase(video)

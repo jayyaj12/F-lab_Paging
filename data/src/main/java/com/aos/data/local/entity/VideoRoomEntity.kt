@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "video")
-data class VideoEntity(
+data class VideoRoomEntity(
     @PrimaryKey val id: String,
     val title: String,
     val thumbnail: String

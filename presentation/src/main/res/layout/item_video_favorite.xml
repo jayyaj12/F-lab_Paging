@@ -6,7 +6,7 @@
 
         <variable
             name="video"
-            type="com.aos.domain.entity.VideoLocalItem" />
+            type="com.aos.domain.entity.VideoEntity" />
 
         <import type="android.view.View" />
     </data>

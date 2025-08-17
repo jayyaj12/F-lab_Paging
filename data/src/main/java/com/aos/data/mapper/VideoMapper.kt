@@ -1,21 +1,20 @@
 package com.aos.data.mapper
 
-import com.aos.data.local.entity.VideoEntity
+import com.aos.data.local.entity.VideoRoomEntity
 import com.aos.data.response.VideoResponse
 import com.aos.data.response.VideoResponseItem
-import com.aos.domain.entity.VideoEntityItem
-import com.aos.domain.entity.VideoLocalItem
+import com.aos.domain.entity.VideoEntity
 import com.aos.domain.entity.VideoType
 
 // 매핑 결과를 담을 데이터 클래스
 data class VideoPageMappingResult(
-    val videoEntityItems: List<VideoEntityItem>,
+    val videoEntities: List<VideoEntity>,
     val nextStartingType: VideoType,
     val nextStartingIndex: Int
 )
 
-fun VideoResponseItem.toDomain(type: VideoType): VideoEntityItem =
-    VideoEntityItem(
+fun VideoResponseItem.toDomain(type: VideoType): VideoEntity =
+    VideoEntity(
         id = "${this.title}_${this.url}".hashCode().toString(),
         title = this.title,
         thumbnail = this.thumbnail,
@@ -53,21 +52,21 @@ fun VideoResponse.toVideoModel(initialType: VideoType, initialIndex: Int): Video
     }
 
     return VideoPageMappingResult(
-        videoEntityItems = domainVideos,
+        videoEntities = domainVideos,
         nextStartingType = typeForThisPage,
         nextStartingIndex = typeCount
     )
 }
 
-fun VideoEntity.toVideoLocalItem(): VideoLocalItem {
-    return VideoLocalItem(
+fun VideoEntity.toVideoRoomEntity(): VideoRoomEntity {
+    return VideoRoomEntity(
         id = this.id,
         title = this.title,
         thumbnail = this.thumbnail
     )
 }
 
-fun VideoEntityItem.toVideoEntity(): VideoEntity {
+fun VideoRoomEntity.toVideoEntity(): VideoEntity {
     return VideoEntity(
         id = this.id,
         title = this.title,
