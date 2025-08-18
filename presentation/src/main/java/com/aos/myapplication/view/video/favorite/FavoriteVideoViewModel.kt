@@ -1,23 +1,14 @@
 package com.aos.myapplication.view.video.favorite
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.aos.domain.entity.VideoEntityItem
-import com.aos.domain.entity.VideoLocalItem
+import com.aos.domain.entity.VideoEntity
 import com.aos.domain.usecase.DeleteFavoriteVideoUseCase
 import com.aos.domain.usecase.ObserveFavoriteVideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -34,7 +25,7 @@ class FavoriteVideoViewModel @Inject constructor(
     val pagedVideos = observeFavoriteVideoUseCase()
         .cachedIn(viewModelScope)
 
-    fun deleteFavoriteVideo(video: VideoLocalItem) {
+    fun deleteFavoriteVideo(video: VideoEntity) {
         viewModelScope.launch {
             runCatching {
                 deleteFavoriteVideoUseCase(video)

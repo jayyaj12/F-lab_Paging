@@ -2,7 +2,7 @@ package com.aos.myapplication.di
 
 import android.content.Context
 import androidx.room.Room
-import com.aos.data.local.AppDatabase
+import com.aos.data.local.VideoDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,12 +15,12 @@ object RoomModule {
 
     @Singleton
     @Provides
-    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase =
-        Room.databaseBuilder(context, AppDatabase::class.java, "video.db").build()
+    fun provideAppDatabase(@ApplicationContext context: Context): VideoDatabase =
+        Room.databaseBuilder(context, VideoDatabase::class.java, "video.db").build()
 
     @Singleton
     @Provides
-    fun provideVideoDao(appDatabase: AppDatabase) = appDatabase.videoDao()
+    fun provideVideoDao(videoDatabase: VideoDatabase) = videoDatabase.videoDao()
 
 }
 

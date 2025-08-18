@@ -1,5 +1,6 @@
 package com.aos.myapplication.view.video.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,8 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.aos.myapplication.databinding.FragmentSearchVideoBinding
+import com.aos.myapplication.view.video.VideoScreenRoute
+import com.aos.myapplication.view.video.detail.VideoDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -47,10 +50,13 @@ class SearchVideoFragment : Fragment() {
     }
 
     private fun setupVideoList() {
-        videoSearchPagingAdapter = VideoSearchPagingAdapter { item ->
+        videoSearchPagingAdapter = VideoSearchPagingAdapter(clickedFavoriteBtn = {
+            item ->
             // 즐겨찾기 버튼 클릭됨
             viewModel.onClickedAddFavorite(item)
-        }
+        }, clickedOpenDetailBtn = {
+            openVideoDetail(it)
+        })
 
         with(binding.rvVideoList) {
             if (itemDecorationCount == 0) {
@@ -100,6 +106,15 @@ class SearchVideoFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun openVideoDetail(clickedIndex: Int) {
+        val intent = Intent(requireContext(), VideoDetailActivity::class.java)
+        intent.putExtra("videos", ArrayList(videoSearchPagingAdapter.snapshot().items))
+        intent.putExtra("initialIndex", clickedIndex)
+        intent.putExtra("route", VideoScreenRoute.SEARCH.name)
+
+        startActivity(intent)
     }
 
     override fun onDestroyView() {

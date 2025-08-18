@@ -5,21 +5,25 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.aos.domain.entity.VideoEntityItem
+import com.aos.domain.entity.VideoEntity
 import com.aos.myapplication.databinding.ItemVideoBinding
 
-class VideoSearchPagingAdapter(private val clickedFavoriteBtn: (VideoEntityItem) -> Unit): PagingDataAdapter<VideoEntityItem, VideoSearchPagingAdapter.VideoViewHolder>(
+class VideoSearchPagingAdapter(private val clickedFavoriteBtn: (VideoEntity) -> Unit, private val clickedOpenDetailBtn: (Int) -> Unit): PagingDataAdapter<VideoEntity, VideoSearchPagingAdapter.VideoViewHolder>(
     diffCallback
 ) {
 
     inner class VideoViewHolder(private val binding: ItemVideoBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: VideoEntityItem) {
+        fun bind(item: VideoEntity) {
             with(binding) {
                 video = item
                 executePendingBindings()
 
                 btnFavorite.setOnClickListener {
                     clickedFavoriteBtn(item)
+                }
+
+                clContainer.setOnClickListener {
+                    clickedOpenDetailBtn(bindingAdapterPosition)
                 }
             }
         }
@@ -37,10 +41,10 @@ class VideoSearchPagingAdapter(private val clickedFavoriteBtn: (VideoEntityItem)
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<VideoEntityItem>() {
-            override fun areItemsTheSame(old: VideoEntityItem, new: VideoEntityItem) =
+        private val diffCallback = object : DiffUtil.ItemCallback<VideoEntity>() {
+            override fun areItemsTheSame(old: VideoEntity, new: VideoEntity) =
                 old.id == new.id
-            override fun areContentsTheSame(old: VideoEntityItem, new: VideoEntityItem) = old == new
+            override fun areContentsTheSame(old: VideoEntity, new: VideoEntity) = old == new
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.aos.domain.usecase
 
 import androidx.paging.PagingData
-import com.aos.domain.entity.VideoEntityItem
+import com.aos.domain.entity.VideoEntity
 import com.aos.domain.repository.VideoRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -11,5 +11,5 @@ class SearchVideoUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         query: String
-    ): Flow<PagingData<VideoEntityItem>> = videoRepository.getVideosPager(query)
+    ): Flow<PagingData<VideoEntity>> = videoRepository.getVideosPager(query)
 }

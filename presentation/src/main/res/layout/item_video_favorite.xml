@@ -6,7 +6,7 @@
 
         <variable
             name="video"
-            type="com.aos.domain.entity.VideoLocalItem" />
+            type="com.aos.domain.entity.VideoEntity" />
 
         <import type="android.view.View" />
     </data>
@@ -17,6 +17,7 @@
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="40dp">

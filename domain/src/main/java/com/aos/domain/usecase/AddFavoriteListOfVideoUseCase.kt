@@ -4,8 +4,8 @@ import com.aos.domain.entity.VideoEntity
 import com.aos.domain.repository.VideoRepository
 import javax.inject.Inject
 
-class AddFavoriteVideoUseCase @Inject constructor(
+class AddFavoriteListOfVideoUseCase @Inject constructor(
     private val videoRepository: VideoRepository
 ) {
-    suspend operator fun invoke(video: VideoEntity) = videoRepository.insertVideo(video)
+    suspend operator fun invoke(video: List<VideoEntity>) = videoRepository.insertListOfVideo(video)
 }

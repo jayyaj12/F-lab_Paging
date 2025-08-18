@@ -1,5 +1,6 @@
 package com.aos.myapplication.view.video.favorite
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +14,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.aos.myapplication.databinding.FragmentFavoriteVideoBinding
+import com.aos.myapplication.view.video.VideoScreenRoute
+import com.aos.myapplication.view.video.detail.VideoDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 @AndroidEntryPoint
 class FavoriteVideoFragment : Fragment() {
@@ -34,7 +34,8 @@ class FavoriteVideoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentFavoriteVideoBinding.inflate(LayoutInflater.from(context), container, false)
+        _binding =
+            FragmentFavoriteVideoBinding.inflate(LayoutInflater.from(context), container, false)
         return binding.root
     }
 
@@ -46,10 +47,13 @@ class FavoriteVideoFragment : Fragment() {
     }
 
     private fun setupVideoList() {
-        videoFavoritePagingAdapter = VideoFavoritePagingAdapter { item ->
+        videoFavoritePagingAdapter = VideoFavoritePagingAdapter(clickedFavoriteBtn = { item ->
             // 즐겨찾기 버튼 삭제 버튼 클릭
             viewModel.deleteFavoriteVideo(item)
-        }
+        }, clickedOpenDetailBtn = { item ->
+            // 상세 페이지 이동 클릭
+            openVideoDetail(item)
+        })
 
         with(binding.rvFavoriteList) {
             if (itemDecorationCount == 0) {
@@ -77,6 +81,14 @@ class FavoriteVideoFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun openVideoDetail(clickedIndex: Int) {
+        val intent = Intent(requireContext(), VideoDetailActivity::class.java)
+        intent.putParcelableArrayListExtra("videos", ArrayList(videoFavoritePagingAdapter.snapshot().items))
+        intent.putExtra("initialIndex", clickedIndex)
+        intent.putExtra("route", VideoScreenRoute.FAVORITE.name)
+        startActivity(intent)
     }
 
     override fun onDestroyView() {
