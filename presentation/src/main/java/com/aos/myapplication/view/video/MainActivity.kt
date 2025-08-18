@@ -9,7 +9,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val mainViewModel by viewModels<MainViewModel>()
     private lateinit var videoViewPagerAdapter: VideoViewPagerAdapter
     private lateinit var binding: ActivityMainBinding
 

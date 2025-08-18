@@ -9,13 +9,13 @@ import com.aos.domain.entity.VideoEntity
 import com.aos.domain.usecase.AddFavoriteVideoUseCase
 import com.aos.domain.usecase.SearchVideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class SearchVideoViewModel @Inject constructor(private val searchVideoUseCase: SearchVideoUseCase, private val addFavoriteVideoUseCase: AddFavoriteVideoUseCase) : ViewModel() {

@@ -14,8 +14,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.aos.domain.entity.VideoEntity
 import com.aos.myapplication.databinding.FragmentSearchVideoBinding
+import com.aos.myapplication.view.video.VideoScreenRoute
 import com.aos.myapplication.view.video.detail.VideoDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -112,7 +112,7 @@ class SearchVideoFragment : Fragment() {
         val intent = Intent(requireContext(), VideoDetailActivity::class.java)
         intent.putExtra("videos", ArrayList(videoSearchPagingAdapter.snapshot().items))
         intent.putExtra("initialIndex", clickedIndex)
-        intent.putExtra("route", "search")
+        intent.putExtra("route", VideoScreenRoute.SEARCH.name)
 
         startActivity(intent)
     }

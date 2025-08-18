@@ -13,15 +13,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.aos.domain.entity.VideoEntity
 import com.aos.myapplication.databinding.FragmentFavoriteVideoBinding
+import com.aos.myapplication.view.video.VideoScreenRoute
 import com.aos.myapplication.view.video.detail.VideoDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 @AndroidEntryPoint
 class FavoriteVideoFragment : Fragment() {
@@ -90,7 +87,7 @@ class FavoriteVideoFragment : Fragment() {
         val intent = Intent(requireContext(), VideoDetailActivity::class.java)
         intent.putParcelableArrayListExtra("videos", ArrayList(videoFavoritePagingAdapter.snapshot().items))
         intent.putExtra("initialIndex", clickedIndex)
-        intent.putExtra("route", "favorite")
+        intent.putExtra("route", VideoScreenRoute.FAVORITE.name)
         startActivity(intent)
     }
 

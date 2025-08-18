@@ -5,16 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aos.domain.entity.VideoEntity
 import com.aos.domain.usecase.AddFavoriteListOfVideoUseCase
-import com.aos.domain.usecase.AddFavoriteVideoUseCase
 import com.aos.domain.usecase.DeleteFavoriteListOfVideoUseCase
-import com.aos.domain.usecase.DeleteFavoriteVideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class OpenVideoDetailViewModel @Inject constructor(
+class VideoDetailViewModel @Inject constructor(
     private val addFavoriteListOfVideoUseCase: AddFavoriteListOfVideoUseCase,
     private val deleteFavoriteListOfVideoUseCase: DeleteFavoriteListOfVideoUseCase
 ) : ViewModel() {
@@ -38,39 +36,34 @@ class OpenVideoDetailViewModel @Inject constructor(
         _videos[position] = _videos[position].copy(isFavorite = !_videos[position].isFavorite)
     }
 
-    fun addFavoriteListOfVideo(videos: List<VideoEntity>) {
-        viewModelScope.launch {
-            addFavoriteListOfVideoUseCase(videos)
-        }
-    }
-
-    fun deleteFavoriteListOfVideo(videos: List<VideoEntity>) {
-        viewModelScope.launch {
-            deleteFavoriteListOfVideoUseCase(videos)
-        }
-    }
-
     fun saveVideosState() {
-        val favoriteVideos = mutableListOf<VideoEntity>()
-        val nonFavoriteVideos = mutableListOf<VideoEntity>()
+        viewModelScope.launch {
+            runCatching {
+                val favoriteVideos = mutableListOf<VideoEntity>()
+                val nonFavoriteVideos = mutableListOf<VideoEntity>()
 
-        if(initVideos == videos) return
+                videos.forEach { currentVideo ->
+                    val originalVideo = initVideos.find { it.id == currentVideo.id }
 
-        videos.forEach { video ->
-            if (video.isFavorite) {
-                favoriteVideos.add(video)
-            } else {
-                nonFavoriteVideos.add(video)
+                    if (originalVideo != null && originalVideo.isFavorite != currentVideo.isFavorite) {
+                        if (currentVideo.isFavorite) {
+                            favoriteVideos.add(currentVideo)
+                        } else {
+                            nonFavoriteVideos.add(currentVideo)
+                        }
+                    }
+                }
+
+                // 변경된 항목이 있을 때만 API 호출
+                if (favoriteVideos.isNotEmpty()) {
+                    addFavoriteListOfVideoUseCase(favoriteVideos)
+                }
+                if (nonFavoriteVideos.isNotEmpty()) {
+                    deleteFavoriteListOfVideoUseCase(nonFavoriteVideos)
+                }
+            }.onFailure {
+                Timber.e("error: ${it.message}")
             }
-        }
-
-        if (favoriteVideos.isNotEmpty()) {
-            Timber.e("favoriteVideos $favoriteVideos")
-            addFavoriteListOfVideo(favoriteVideos)
-        }
-        if (nonFavoriteVideos.isNotEmpty()) {
-            Timber.e("nonFavoriteVideos $nonFavoriteVideos")
-            deleteFavoriteListOfVideo(nonFavoriteVideos)
         }
     }
 }

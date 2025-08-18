@@ -24,9 +24,10 @@ fun VideoResponseItem.toDomain(type: VideoType): VideoEntity =
 fun VideoResponse.toVideoModel(initialType: VideoType, initialIndex: Int): VideoPageMappingResult {
     var typeForThisPage = initialType
     var indexForThisPage = initialIndex
+    val TYPE_CYCLE_COUNT = 3
 
     val addPreviousType = if (indexForThisPage != 0) {
-        3 - indexForThisPage
+        TYPE_CYCLE_COUNT - indexForThisPage
     } else {
         0
     }
@@ -35,9 +36,9 @@ fun VideoResponse.toVideoModel(initialType: VideoType, initialIndex: Int): Video
     val domainVideos = this.videos.mapIndexed { videoIndex, video ->
         if (videoIndex >= addPreviousType) {
             val adjustedIndex = if (indexForThisPage != 0) {
-                (videoIndex + indexForThisPage) % 3
+                (videoIndex + indexForThisPage) % TYPE_CYCLE_COUNT
             } else {
-                videoIndex % 3
+                videoIndex % TYPE_CYCLE_COUNT
             }
 
             if (adjustedIndex == 0) {
